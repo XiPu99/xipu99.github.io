@@ -6,10 +6,27 @@
     <description>Recent content in Posts on Xi Pu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 27 Dec 2019 14:40:01 -0800</lastBuildDate>
+    <lastBuildDate>Sat, 28 Dec 2019 15:10:06 -0800</lastBuildDate>
     
 	<atom:link href="https://xipu99.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Maven包管理</title>
+      <link>https://xipu99.github.io/posts/maven-package-management/</link>
+      <pubDate>Sat, 28 Dec 2019 15:10:06 -0800</pubDate>
+      
+      <guid>https://xipu99.github.io/posts/maven-package-management/</guid>
+      <description>最近初步了解了maven和Java的编译过程，做一下知识的总结：
+Java编译过程 我们都知道，平时我们在IDE中写的都是源代码，然而我们的电脑其实并“看不懂”源代码，这时候我们就需要一个叫编译器的东西把源代码转换成电脑能看懂的语言，比如说二进制。Java的编译器会把源代码转换成一种叫字节码的东西，这些文件以.class为后缀名，编译好之后通过JVM来运行。然而平时我们在写代码的时候却很少关注过甚至意识到还有这个过程。
+我们会把这些.class文件打包成一个.jar文件。这个文件其实本质上是一个.zip文件，只不过Java把后缀名改成了.jar(如果不信的话，你可以试试把一个jar文件的后缀名改成zip，在mac上你可以直接双击解压)。
+为什么需要包管理 在日常开发中，我们不可避免的会使用一些第三方库，也就是其他人写的代码。在没有maven这种包管理系统之前，程序员都是手动管理依赖包的，这样的过程十分麻烦，而且容易产生错误。有了maven之后，这种脏活累活就不需要程序员自己去做了。maven会在你的项目的根目录中添加一个叫pom.xml的文件，里面包含了各种跟你项目有关的信息，其中就包括了项目中依赖了哪些包这种信息。
+如何解决包冲突 然而，maven不是万能的，有的时候我们会遇到包冲突的问题，也就是在我们的项目中，出现了多个有相同名字，不同版本号的包。
+这个时候，maven必须强行选择其中一个版本的包来运行，然后忽略其他版本。这就导致了有时我们会遇到编译报错的问题，因为maven忽略的版本中可能包含了我们项目中所需要的类或方法。
+为了解决这个问题，我们必须了解maven是如何进行这个选择的。
+如果我们把程序中的依赖关系想象成数据结构中的树的话，maven解决的方法很容易理解，它具体遵守了以下两个原则：
+ 在依赖树中里根最近的依赖包会被保留 如果两个包和根有相同的距离，那么最先在pom.xml中出现的被保留  所以为了解决包冲突，我们可以直接在依赖树的根部声明一个我们想要保留的包名和它的版本号或者在pom.xml中使用&amp;lt;exclusion&amp;gt;标记.</description>
+    </item>
     
     <item>
       <title>How to create a Hugo website</title>
