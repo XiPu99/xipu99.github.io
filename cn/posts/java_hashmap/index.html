@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="" />
+  <meta property="og:url" content="https://xipu99.github.io/cn/posts/java_hashmap/" />
+  <link rel="canonical" href="https://xipu99.github.io/cn/posts/java_hashmap/" /><script type="application/ld+json">
+  {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+           "@type": "WebPage",
+           "@id": "https:\/\/xipu99.github.io\/"
+      },
+      "articleSection" : "posts",
+      "name" : "HashMap浅析",
+      "headline" : "HashMap浅析",
+      "description" : "整理一下最近学到的关于Java的HashMap知识点：\nHashMap的核心基于哈希值的桶和链表。\n哈希碰撞是指有两个对象因为有相同的哈希值被放入相同的桶中的情况。Java对这种情况的处理是将每个桶的内部结构变成一个链表。在Java 8中，如果一个桶里的链表长度大于8时，HashMap内部会把链表转换成红黑树来提高查找效率。把变为树的阈值取为8的原因是因为一个哈希桶中的元素数量大致是一个泊松分部，当数量超过8时，概率就非常小了。\n如果我们使用HashMap的默认构造器，也就是不传入任何参数，那么创建出来的HashMap的初始容量为16，也就是说刚开始会有16个哈希桶，Java会用一个长度为16的数组来表示这些桶。\n当我们使用map.put(key, val)这种操作时，Java先调用对象的hashcode()方法计算哈希值，然后根据这个哈希值把对象放入相应的哈希桶中。\n为了通过对象的哈希值计算相应哈希桶的下标，我们需要hashcode所有可能的值（-2^31~2^31-1），映射到0~15之间。一个最直接的方法是对哈希值进行取余操作，也就是hashcode%16来得到桶的下标。但是，对负数取余会得到一个负数。其次，取余作为一种计算方法操作效率比较低。\nHashMap源码中使用了位运算hashcode \x26amp; (容量-1) 来计算桶的小标。这个位运算操作本质上就是利用二进制进行取余操作，同时这段源码也解释了为什么HashMap的容量必须为2的幂。\n当HashMap里的元素数量超过了一个阈值时，Java会对它进行扩容，新的容量变为原来的两倍，这样做可以减少哈希碰撞。 阈值的值为容量和负载因子的乘积。在扩容的过程中，Java会对HashMap中的元素重新计算哈希值，然后放到扩容后的桶中。\n关于HashMap，还有一个非常重要的点就是HashMap是非线程安全的。如果你想要使用线程安全的哈希表实现，可以使用ConcurrentHashMap。至于为什么HashMap不是线程安全的，简单来说是因为扩容时对桶中元素进行移动等读写操作时会造成死循环，具体原因可以参考这篇文章。",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2019",
+      "datePublished": "2019-12-30 20:28:18 -0800 PST",
+      "dateModified" : "2019-12-30 20:28:18 -0800 PST",
+      "url" : "https:\/\/xipu99.github.io\/cn\/posts\/java_hashmap\/",
+      "keywords" : [  ]
+  }
+</script>
+<title>HashMap浅析 - Xi Pu&#39;s blog</title>
+  <meta property="og:title" content="HashMap浅析 - Xi Pu&#39;s blog" />
+  <meta property="og:type" content="article" />
+  <meta name="description" content="整理一下最近学到的关于Java的HashMap知识点：
+HashMap的核心基于哈希值的桶和链表。
+哈希碰撞是指有两个对象因为有相同的哈希值被放入相同的桶中的情况。Java对这种情况的处理是将每个桶的内部结构变成一个链表。在Java 8中，如果一个桶里的链表长度大于8时，HashMap内部会把链表转换成红黑树来提高查找效率。把变为树的阈值取为8的原因是因为一个哈希桶中的元素数量大致是一个泊松分部，当数量超过8时，概率就非常小了。
+如果我们使用HashMap的默认构造器，也就是不传入任何参数，那么创建出来的HashMap的初始容量为16，也就是说刚开始会有16个哈希桶，Java会用一个长度为16的数组来表示这些桶。
+当我们使用map.put(key, val)这种操作时，Java先调用对象的hashcode()方法计算哈希值，然后根据这个哈希值把对象放入相应的哈希桶中。
+为了通过对象的哈希值计算相应哈希桶的下标，我们需要hashcode所有可能的值（-2^31~2^31-1），映射到0~15之间。一个最直接的方法是对哈希值进行取余操作，也就是hashcode%16来得到桶的下标。但是，对负数取余会得到一个负数。其次，取余作为一种计算方法操作效率比较低。
+HashMap源码中使用了位运算hashcode &amp; (容量-1) 来计算桶的小标。这个位运算操作本质上就是利用二进制进行取余操作，同时这段源码也解释了为什么HashMap的容量必须为2的幂。
+当HashMap里的元素数量超过了一个阈值时，Java会对它进行扩容，新的容量变为原来的两倍，这样做可以减少哈希碰撞。 阈值的值为容量和负载因子的乘积。在扩容的过程中，Java会对HashMap中的元素重新计算哈希值，然后放到扩容后的桶中。
+关于HashMap，还有一个非常重要的点就是HashMap是非线程安全的。如果你想要使用线程安全的哈希表实现，可以使用ConcurrentHashMap。至于为什么HashMap不是线程安全的，简单来说是因为扩容时对桶中元素进行移动等读写操作时会造成死循环，具体原因可以参考这篇文章。" />
+
+  <link rel="stylesheet" href="/css/flexboxgrid-6.3.1.min.css" />
+  <link rel="stylesheet"
+    href="/css/github-markdown.min.css" />
+  <link rel="stylesheet" href="/css/highlight/tomorrow.min.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Xi Pu&#39;s blog">
+  
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Permanent+Marker" rel="stylesheet">
+  
+  
+
+  
+</head>
+
+
+<body>
+  <article class="post Chinese" id="article">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <div class="site-header">
+          
+<header>
+  <div class="signatures site-title">
+    <a href="/cn/">Xi Pu</a>
+  </div>
+</header>
+<div class="row end-xs">
+  
+  
+  <div class="lang-switch col-xs-3 col-xs-offset-9">
+    <a href="/en/">English</a>
+  </div>
+  
+  
+</div>
+<div class="header-line"></div>
+
+        </div>
+        <header class="post-header">
+          <h1 class="post-title">HashMap浅析</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2019-12-30 20:28:18 PST">
+                30 Dec 2019
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          <p>整理一下最近学到的关于Java的HashMap知识点：</p>
+<p>HashMap的核心基于哈希值的桶和链表。</p>
+<p>哈希碰撞是指有两个对象因为有相同的哈希值被放入相同的桶中的情况。Java对这种情况的处理是将每个桶的内部结构变成一个链表。在Java 8中，如果一个桶里的链表长度大于8时，HashMap内部会把链表转换成红黑树来提高查找效率。把变为树的阈值取为8的原因是因为一个哈希桶中的元素数量大致是一个泊松分部，当数量超过8时，概率就非常小了。</p>
+<p>如果我们使用HashMap的默认构造器，也就是不传入任何参数，那么创建出来的HashMap的初始容量为16，也就是说刚开始会有16个哈希桶，Java会用一个长度为16的数组来表示这些桶。</p>
+<p>当我们使用<code>map.put(key, val)</code>这种操作时，Java先调用对象的hashcode()方法计算哈希值，然后根据这个哈希值把对象放入相应的哈希桶中。</p>
+<p>为了通过对象的哈希值计算相应哈希桶的下标，我们需要hashcode所有可能的值（-2^31~2^31-1），映射到0~15之间。一个最直接的方法是对哈希值进行取余操作，也就是<code>hashcode%16</code>来得到桶的下标。但是，对负数取余会得到一个负数。其次，取余作为一种计算方法操作效率比较低。</p>
+<p>HashMap源码中使用了位运算<code>hashcode &amp; (容量-1)</code> 来计算桶的小标。这个位运算操作本质上就是利用二进制进行取余操作，同时这段源码也解释了为什么HashMap的容量必须为2的幂。</p>
+<p>当HashMap里的元素数量超过了一个阈值时，Java会对它进行扩容，新的容量变为原来的两倍，这样做可以减少哈希碰撞。
+阈值的值为容量和负载因子的乘积。在扩容的过程中，Java会对HashMap中的元素重新计算哈希值，然后放到扩容后的桶中。</p>
+<p>关于HashMap，还有一个非常重要的点就是HashMap是非线程安全的。如果你想要使用线程安全的哈希表实现，可以使用<code>ConcurrentHashMap</code>。至于为什么HashMap不是线程安全的，简单来说是因为扩容时对桶中元素进行移动等读写操作时会造成死循环，具体原因可以参考<a href="https://coolshell.cn/articles/9606.html">这篇文章</a>。</p>
+
+        </div>
+
+        <div class="row middle-xs">
+          <div class="col-xs-12">
+            
+          </div>
+        </div>
+
+        
+        
+
+        
+        
+        <div style="height: 50px;"></div>
+        
+        
+
+        <div class="site-footer">
+  
+  <div class="site-footer-item">
+    <a href="/aboutme" target="_blank">About Me</a>
+  </div>
+  
+  
+</div>
+
+      </div>
+    </div>
+  </article>
+
+  <script src="/js/highlight.pack.js"></script>
+
+
+<script>
+  hljs.initHighlightingOnLoad();
+  
+  
+  
+    
+    
+  
+</script>
+
+  
+
+</body>
+
+</html>
