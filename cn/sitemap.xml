@@ -3,13 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://xipu99.github.io/cn/posts/java_hashmap/</loc>
-    <lastmod>2019-12-30T20:28:18-08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://xipu99.github.io/cn/posts/</loc>
-    <lastmod>2019-12-30T20:28:18-08:00</lastmod>
+    <lastmod>2020-01-06T08:22:58-08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -24,7 +19,7 @@
   
   <url>
     <loc>https://xipu99.github.io/cn/</loc>
-    <lastmod>2019-12-30T20:28:18-08:00</lastmod>
+    <lastmod>2020-01-06T08:22:58-08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -35,6 +30,16 @@
                 hreflang="cn"
                 href="https://xipu99.github.io/cn/"
                 />
+  </url>
+  
+  <url>
+    <loc>https://xipu99.github.io/cn/posts/multithread/</loc>
+    <lastmod>2020-01-06T08:22:58-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xipu99.github.io/cn/posts/java_hashmap/</loc>
+    <lastmod>2019-12-30T20:28:18-08:00</lastmod>
   </url>
   
   <url>

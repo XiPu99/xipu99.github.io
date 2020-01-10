@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="" />
+  <meta property="og:url" content="https://xipu99.github.io/cn/posts/multithread/" />
+  <link rel="canonical" href="https://xipu99.github.io/cn/posts/multithread/" /><script type="application/ld+json">
+  {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+           "@type": "WebPage",
+           "@id": "https:\/\/xipu99.github.io\/"
+      },
+      "articleSection" : "posts",
+      "name" : "初步了解Java多线程",
+      "headline" : "初步了解Java多线程",
+      "description" : "整理一下最近学习到的有关java多线程方面的知识：\n什么时候使用多线程 IO密集（既有很多IO操作）时，原因主要是因为在普通单线程的情况下，当CPU执行了一个IO操作时，它就必须等待IO操作完成，而不能做其他事情，因此浪费了大量CPU的时间，这个状态被称为阻塞。如果我们使用了多线程，在执行IO操作之后，其他线程不必阻塞等待IO完成，可以完成其他工作，所以提高的CPU的使用率。\n进程和线程 进程中可以包含多个线程。同一个进程中的线程享有一些共同的系统资源，比如说堆区，全局变量。除了共享的资源，每个线程会有一个自己独立的栈区和栈指针。\n线程安全 当程序中有多个线程对同一个公有变量进行读写操作的时候，就有可能产生线程安全问题，因为我们使用的读写操作并不一定是原子操作。比如说，i\x2b\x2b并不是一个原子操作，而是会被分解为三个步骤：\n 从内存中取i的值 对i进行加1操作 把结果写回内存  在任意一个步骤执行结束后，操作系统都有可能切换到另外一个线程中。这种情况就有可能引起线程不安全的问题。\n死锁 以下的方法可以用来预防死锁：\n 所有的线程都按照相同的顺序获得资源的锁 使用不可变的类 使用synchronized块  当发生死锁问题时，我们可以使用java自带的jstack来查看每个线程调用的方法栈，从而判断死锁发生的原因。这个链接讲解了jstack输出内容代表的含义。\n其他 第一次接触java的多线程，踩了不少坑。这里记录其中一个 害我花了一天debug的坑。\n下面是我一开始写的经过简化过的一段代码。我自以为在最后的print语句会始终打印出1。然而，真正运行的结果时，有时会打印出1，有时打印出0。\npublic static void main(String[] args){ final int[] arr = {0}; Thread t = new Thread(){ @Override public void run(){ arr[0] = 1; } }; t.start(); System.out.println(arr[0]); \/\/有时会打印出1，有时打印出0 } 导致这样的原因是你现在在main thread中开启了一个新的Thread t。当你调用了t.start()时，两个thread同时进行，然而你并不能保证是main thread的print先执行还是Thread t中的arr[0] = 1限制性，因为操作系统的线程调度有很大的随机性。\n为了让这段代码达到我们预期的效果，也就是始终打印出1，我们可以调用Thread t的 join方法（如下面这段代码所示）。这个方法能使当前线程等待t执行完毕后在执行接下来的指令，所以保证了arr[0] = 1永远会在print语句前面被执行。\npublic static void main(String[] args){ final int[] arr = {0}; Thread t = new Thread(){ @Override public void run(){ arr[0] = 1; } }; t.",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2020",
+      "datePublished": "2020-01-06 08:22:58 -0800 -0800",
+      "dateModified" : "2020-01-06 08:22:58 -0800 -0800",
+      "url" : "https:\/\/xipu99.github.io\/cn\/posts\/multithread\/",
+      "keywords" : [  ]
+  }
+</script>
+<title>初步了解Java多线程 - Xi Pu&#39;s blog</title>
+  <meta property="og:title" content="初步了解Java多线程 - Xi Pu&#39;s blog" />
+  <meta property="og:type" content="article" />
+  <meta name="description" content="整理一下最近学习到的有关java多线程方面的知识：
+什么时候使用多线程 IO密集（既有很多IO操作）时，原因主要是因为在普通单线程的情况下，当CPU执行了一个IO操作时，它就必须等待IO操作完成，而不能做其他事情，因此浪费了大量CPU的时间，这个状态被称为阻塞。如果我们使用了多线程，在执行IO操作之后，其他线程不必阻塞等待IO完成，可以完成其他工作，所以提高的CPU的使用率。
+进程和线程 进程中可以包含多个线程。同一个进程中的线程享有一些共同的系统资源，比如说堆区，全局变量。除了共享的资源，每个线程会有一个自己独立的栈区和栈指针。
+线程安全 当程序中有多个线程对同一个公有变量进行读写操作的时候，就有可能产生线程安全问题，因为我们使用的读写操作并不一定是原子操作。比如说，i&#43;&#43;并不是一个原子操作，而是会被分解为三个步骤：
+ 从内存中取i的值 对i进行加1操作 把结果写回内存  在任意一个步骤执行结束后，操作系统都有可能切换到另外一个线程中。这种情况就有可能引起线程不安全的问题。
+死锁 以下的方法可以用来预防死锁：
+ 所有的线程都按照相同的顺序获得资源的锁 使用不可变的类 使用synchronized块  当发生死锁问题时，我们可以使用java自带的jstack来查看每个线程调用的方法栈，从而判断死锁发生的原因。这个链接讲解了jstack输出内容代表的含义。
+其他 第一次接触java的多线程，踩了不少坑。这里记录其中一个 害我花了一天debug的坑。
+下面是我一开始写的经过简化过的一段代码。我自以为在最后的print语句会始终打印出1。然而，真正运行的结果时，有时会打印出1，有时打印出0。
+public static void main(String[] args){ final int[] arr = {0}; Thread t = new Thread(){ @Override public void run(){ arr[0] = 1; } }; t.start(); System.out.println(arr[0]); //有时会打印出1，有时打印出0 } 导致这样的原因是你现在在main thread中开启了一个新的Thread t。当你调用了t.start()时，两个thread同时进行，然而你并不能保证是main thread的print先执行还是Thread t中的arr[0] = 1限制性，因为操作系统的线程调度有很大的随机性。
+为了让这段代码达到我们预期的效果，也就是始终打印出1，我们可以调用Thread t的 join方法（如下面这段代码所示）。这个方法能使当前线程等待t执行完毕后在执行接下来的指令，所以保证了arr[0] = 1永远会在print语句前面被执行。
+public static void main(String[] args){ final int[] arr = {0}; Thread t = new Thread(){ @Override public void run(){ arr[0] = 1; } }; t." />
+
+  <link rel="stylesheet" href="/css/flexboxgrid-6.3.1.min.css" />
+  <link rel="stylesheet"
+    href="/css/github-markdown.min.css" />
+  <link rel="stylesheet" href="/css/highlight/tomorrow.min.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Xi Pu&#39;s blog">
+  
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Permanent+Marker" rel="stylesheet">
+  
+  
+
+  
+</head>
+
+
+<body>
+  <article class="post Chinese" id="article">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <div class="site-header">
+          
+<header>
+  <div class="signatures site-title">
+    <a href="/cn/">Xi Pu</a>
+  </div>
+</header>
+<div class="row end-xs">
+  
+  
+  <div class="lang-switch col-xs-3 col-xs-offset-9">
+    <a href="/en/">English</a>
+  </div>
+  
+  
+</div>
+<div class="header-line"></div>
+
+        </div>
+        <header class="post-header">
+          <h1 class="post-title">初步了解Java多线程</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2020-01-06 08:22:58 -0800">
+                06 Jan 2020
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          <p>整理一下最近学习到的有关java多线程方面的知识：</p>
+<h2 id="heading">什么时候使用多线程</h2>
+<p>IO密集（既有很多IO操作）时，原因主要是因为在普通单线程的情况下，当CPU执行了一个IO操作时，它就必须等待IO操作完成，而不能做其他事情，因此浪费了大量CPU的时间，这个状态被称为阻塞。如果我们使用了多线程，在执行IO操作之后，其他线程不必阻塞等待IO完成，可以完成其他工作，所以提高的CPU的使用率。</p>
+<h2 id="heading-1">进程和线程</h2>
+<p>进程中可以包含多个线程。同一个进程中的线程享有一些共同的系统资源，比如说堆区，全局变量。除了共享的资源，每个线程会有一个自己独立的栈区和栈指针。</p>
+<h2 id="heading-2">线程安全</h2>
+<p>当程序中有多个线程对同一个公有变量进行读写操作的时候，就有可能产生线程安全问题，因为我们使用的读写操作并不一定是原子操作。比如说，<code>i++</code>并不是一个原子操作，而是会被分解为三个步骤：</p>
+<ol>
+<li>从内存中取i的值</li>
+<li>对i进行加1操作</li>
+<li>把结果写回内存</li>
+</ol>
+<p>在任意一个步骤执行结束后，操作系统都有可能切换到另外一个线程中。这种情况就有可能引起线程不安全的问题。</p>
+<h2 id="heading-3">死锁</h2>
+<p>以下的方法可以用来预防死锁：</p>
+<ol>
+<li>所有的线程都按照相同的顺序获得资源的锁</li>
+<li>使用不可变的类</li>
+<li>使用synchronized块</li>
+</ol>
+<p>当发生死锁问题时，我们可以使用java自带的jstack来查看每个线程调用的方法栈，从而判断死锁发生的原因。<a href="https://dzone.com/articles/how-analyze-java-thread-dumps">这个链接</a>讲解了jstack输出内容代表的含义。</p>
+<h2 id="heading-4">其他</h2>
+<p>第一次接触java的多线程，踩了不少坑。这里记录其中一个
+害我花了一天debug的坑。</p>
+<p>下面是我一开始写的经过简化过的一段代码。我自以为在最后的<code>print</code>语句会始终打印出1。然而，真正运行的结果时，有时会打印出1，有时打印出0。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> arr <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>0<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+    Thread t <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+            arr<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>        
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+    t<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>arr<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">//有时会打印出1，有时打印出0 
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>导致这样的原因是你现在在<code>main thread</code>中开启了一个新的<code>Thread t</code>。当你调用了<code>t.start()</code>时，两个thread同时进行，然而你并不能保证是<code>main thread</code>的<code>print</code>先执行还是<code>Thread t</code>中的<code>arr[0] = 1</code>限制性，因为操作系统的线程调度有很大的随机性。</p>
+<p>为了让这段代码达到我们预期的效果，也就是始终打印出1，我们可以调用<code>Thread t</code>的 <code>join</code>方法（如下面这段代码所示）。这个方法能使当前线程等待<code>t</code>执行完毕后在执行接下来的指令，所以保证了<code>arr[0] = 1</code>永远会在<code>print</code>语句前面被执行。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[</span><span style="color:#f92672">]</span> args<span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span> arr <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>0<span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+    Thread t <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">{</span>
+            arr<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>        
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+
+    t<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    t<span style="color:#f92672">.</span><span style="color:#a6e22e">join</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 等待线程t执行完毕
+</span><span style="color:#75715e"></span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>arr<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>  <span style="color:#75715e">// 只会打印出1 
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>其他关于线程的概念还有线程的生命周期以及状态，我在网上找到<a href="https://howtodoinjava.com/java/multi-threading/java-thread-life-cycle-and-thread-states/">这篇文章</a>，感觉总结得还不错。</p>
+
+        </div>
+
+        <div class="row middle-xs">
+          <div class="col-xs-12">
+            
+          </div>
+        </div>
+
+        
+        
+
+        
+        
+        <div style="height: 50px;"></div>
+        
+        
+
+        <div class="site-footer">
+  
+  <div class="site-footer-item">
+    <a href="/aboutme" target="_blank">About Me</a>
+  </div>
+  
+  
+</div>
+
+      </div>
+    </div>
+  </article>
+
+  <script src="/js/highlight.pack.js"></script>
+
+
+<script>
+  hljs.initHighlightingOnLoad();
+  
+  
+  
+    
+    
+  
+</script>
+
+  
+
+</body>
+
+</html>

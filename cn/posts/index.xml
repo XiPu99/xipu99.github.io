@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Testing</title>
+    <title>Posts on Xi Pu&#39;s blog</title>
     <link>https://xipu99.github.io/cn/posts/</link>
-    <description>Recent content in Posts on Testing</description>
+    <description>Recent content in Posts on Xi Pu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Dec 2019 20:28:18 -0800</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jan 2020 08:22:58 -0800</lastBuildDate>
     
 	<atom:link href="https://xipu99.github.io/cn/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>初步了解Java多线程</title>
+      <link>https://xipu99.github.io/cn/posts/multithread/</link>
+      <pubDate>Mon, 06 Jan 2020 08:22:58 -0800</pubDate>
+      
+      <guid>https://xipu99.github.io/cn/posts/multithread/</guid>
+      <description>整理一下最近学习到的有关java多线程方面的知识：
+什么时候使用多线程 IO密集（既有很多IO操作）时，原因主要是因为在普通单线程的情况下，当CPU执行了一个IO操作时，它就必须等待IO操作完成，而不能做其他事情，因此浪费了大量CPU的时间，这个状态被称为阻塞。如果我们使用了多线程，在执行IO操作之后，其他线程不必阻塞等待IO完成，可以完成其他工作，所以提高的CPU的使用率。
+进程和线程 进程中可以包含多个线程。同一个进程中的线程享有一些共同的系统资源，比如说堆区，全局变量。除了共享的资源，每个线程会有一个自己独立的栈区和栈指针。
+线程安全 当程序中有多个线程对同一个公有变量进行读写操作的时候，就有可能产生线程安全问题，因为我们使用的读写操作并不一定是原子操作。比如说，i++并不是一个原子操作，而是会被分解为三个步骤：
+ 从内存中取i的值 对i进行加1操作 把结果写回内存  在任意一个步骤执行结束后，操作系统都有可能切换到另外一个线程中。这种情况就有可能引起线程不安全的问题。
+死锁 以下的方法可以用来预防死锁：
+ 所有的线程都按照相同的顺序获得资源的锁 使用不可变的类 使用synchronized块  当发生死锁问题时，我们可以使用java自带的jstack来查看每个线程调用的方法栈，从而判断死锁发生的原因。这个链接讲解了jstack输出内容代表的含义。
+其他 第一次接触java的多线程，踩了不少坑。这里记录其中一个 害我花了一天debug的坑。
+下面是我一开始写的经过简化过的一段代码。我自以为在最后的print语句会始终打印出1。然而，真正运行的结果时，有时会打印出1，有时打印出0。
+public static void main(String[] args){ final int[] arr = {0}; Thread t = new Thread(){ @Override public void run(){ arr[0] = 1; } }; t.start(); System.out.println(arr[0]); //有时会打印出1，有时打印出0 } 导致这样的原因是你现在在main thread中开启了一个新的Thread t。当你调用了t.start()时，两个thread同时进行，然而你并不能保证是main thread的print先执行还是Thread t中的arr[0] = 1限制性，因为操作系统的线程调度有很大的随机性。
+为了让这段代码达到我们预期的效果，也就是始终打印出1，我们可以调用Thread t的 join方法（如下面这段代码所示）。这个方法能使当前线程等待t执行完毕后在执行接下来的指令，所以保证了arr[0] = 1永远会在print语句前面被执行。
+public static void main(String[] args){ final int[] arr = {0}; Thread t = new Thread(){ @Override public void run(){ arr[0] = 1; } }; t.</description>
+    </item>
     
     <item>
       <title>HashMap浅析</title>
