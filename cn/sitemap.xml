@@ -3,8 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xipu99.github.io/cn/posts/html_tags/</loc>
+    <lastmod>2020-03-06T22:37:33-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xipu99.github.io/cn/posts/</loc>
-    <lastmod>2020-01-06T08:22:58-08:00</lastmod>
+    <lastmod>2020-03-06T22:37:33-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -19,7 +24,7 @@
   
   <url>
     <loc>https://xipu99.github.io/cn/</loc>
-    <lastmod>2020-01-06T08:22:58-08:00</lastmod>
+    <lastmod>2020-03-06T22:37:33-05:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"

@@ -6,10 +6,25 @@
     <description>Recent content in Posts on Xi Pu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Jan 2020 08:22:58 -0800</lastBuildDate>
+    <lastBuildDate>Fri, 06 Mar 2020 22:37:33 -0500</lastBuildDate>
     
 	<atom:link href="https://xipu99.github.io/cn/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>HTML常用的两种标签</title>
+      <link>https://xipu99.github.io/cn/posts/html_tags/</link>
+      <pubDate>Fri, 06 Mar 2020 22:37:33 -0500</pubDate>
+      
+      <guid>https://xipu99.github.io/cn/posts/html_tags/</guid>
+      <description>&amp;lt;a&amp;gt; 标签 你可以在“href”中添加以下：
+ 一个网页链接 一个目录路径 当前页面中的一个元素，比如如果用户点击了下面代码所展示的链接，页面就会跳到页面中id为header的元素。如果将href设为#时，则会直接跳转到页面的顶部：  &amp;lt;p&amp;gt;&amp;lt;a href=&amp;#34;#header&amp;#34;&amp;gt; Jump to the heading below &amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt; 根据target属性所设置的不同值，当用户点击&amp;lt;a&amp;gt;标签所指的链接时，浏览器会有不同的行为：
+ _self: 浏览器会使用当前页面来打开链接 _blank: 浏览器会打开一个新的页面  &amp;lt;img&amp;gt; 标签 &amp;lt;img&amp;gt;标签通常用来展示图片。
+&amp;lt;img&amp;gt;标签有以下常见的属性可以设置：
+  src：必须要设置的&amp;lt;img&amp;gt;属性，代表了想要插入的图片的路径
+  alt: 可以提供一段解释这张图片的文字。如果因为各种原因图片加载失败，浏览器会自动把加载失败的图片转换成alt中设置的文字
+  </description>
+    </item>
     
     <item>
       <title>初步了解Java多线程</title>
