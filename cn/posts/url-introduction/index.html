@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="" />
+  <meta property="og:url" content="https://xipu99.github.io/cn/posts/url-introduction/" />
+  <link rel="canonical" href="https://xipu99.github.io/cn/posts/url-introduction/" /><script type="application/ld+json">
+  {
+      "@context" : "http://schema.org",
+      "@type" : "BlogPosting",
+      "mainEntityOfPage": {
+           "@type": "WebPage",
+           "@id": "https:\/\/xipu99.github.io\/"
+      },
+      "articleSection" : "posts",
+      "name" : "浅析URL",
+      "headline" : "浅析URL",
+      "description" : "简单总结几个跟URL有关的概念：\n域名 域名（domain name）简单来说就是对一个IP地址的别称。用www.example.com来举例子，com是顶级域名，其他常见的顶级域名还有gov, edu等。example.com是二级域名。前面再加上前缀www就变成了子域名（subdomain）。这些不同层级的域名将会被用作DNS查找过程中的参数。\nDNS DNS全称为Domain Name System，是一个把域名和IP联系起来的系统。当你输入某某网站的网址并按下回车时，浏览器会向DNS询问该网址所对应的IP地址，然后发起http请求。\nURL URL的全称为Uniform Resource Locator，URL无非就是一个给定的独特资源在Web上的地址。理论上说，每个有效的URL都指向一个独特的资源。这个资源可以是一个HTML页面，一个CSS文档，一幅图像，等等。\n一个URL会有多个部分组成：\n 协议（Protocol）：通常是http或者https 域名：也可以使用IP地址 端口：一台服务器可能会有多个端口来处理不同的服务，所以URL中的端口指定了将访问服务器的哪一个端口。http默认访问端口为80，https默认端口为443。一般浏览器会把默认端口隐藏起来。 路径：服务器上的资源路径 查询参数：提供给服务器的额外参数，由\x26amp;符号分隔开的键\/值对。 锚点（Anchor）：锚点表示资源中的一种“书签”，给浏览器显示位于该“加书签”位置的内容的方向  参考文章  什么是URL  ",
+      "inLanguage" : "en-US",
+      "author" : "",
+      "creator" : "",
+      "publisher": "",
+      "accountablePerson" : "",
+      "copyrightHolder" : "",
+      "copyrightYear" : "2020",
+      "datePublished": "2020-03-09 16:47:16 -0400 EDT",
+      "dateModified" : "2020-03-09 16:47:16 -0400 EDT",
+      "url" : "https:\/\/xipu99.github.io\/cn\/posts\/url-introduction\/",
+      "keywords" : [  ]
+  }
+</script>
+<title>浅析URL - Xi Pu&#39;s blog</title>
+  <meta property="og:title" content="浅析URL - Xi Pu&#39;s blog" />
+  <meta property="og:type" content="article" />
+  <meta name="description" content="简单总结几个跟URL有关的概念：
+域名 域名（domain name）简单来说就是对一个IP地址的别称。用www.example.com来举例子，com是顶级域名，其他常见的顶级域名还有gov, edu等。example.com是二级域名。前面再加上前缀www就变成了子域名（subdomain）。这些不同层级的域名将会被用作DNS查找过程中的参数。
+DNS DNS全称为Domain Name System，是一个把域名和IP联系起来的系统。当你输入某某网站的网址并按下回车时，浏览器会向DNS询问该网址所对应的IP地址，然后发起http请求。
+URL URL的全称为Uniform Resource Locator，URL无非就是一个给定的独特资源在Web上的地址。理论上说，每个有效的URL都指向一个独特的资源。这个资源可以是一个HTML页面，一个CSS文档，一幅图像，等等。
+一个URL会有多个部分组成：
+ 协议（Protocol）：通常是http或者https 域名：也可以使用IP地址 端口：一台服务器可能会有多个端口来处理不同的服务，所以URL中的端口指定了将访问服务器的哪一个端口。http默认访问端口为80，https默认端口为443。一般浏览器会把默认端口隐藏起来。 路径：服务器上的资源路径 查询参数：提供给服务器的额外参数，由&amp;符号分隔开的键/值对。 锚点（Anchor）：锚点表示资源中的一种“书签”，给浏览器显示位于该“加书签”位置的内容的方向  参考文章  什么是URL  " />
+
+  <link rel="stylesheet" href="/css/flexboxgrid-6.3.1.min.css" />
+  <link rel="stylesheet"
+    href="/css/github-markdown.min.css" />
+  <link rel="stylesheet" href="/css/highlight/tomorrow.min.css" />
+  <link rel="stylesheet" href="/css/index.css">
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Xi Pu&#39;s blog">
+  
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Permanent+Marker" rel="stylesheet">
+  
+  
+
+  
+</head>
+
+
+<body>
+  <article class="post Chinese" id="article">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <div class="site-header">
+          
+<header>
+  <div class="signatures site-title">
+    <a href="/cn/">Xi Pu</a>
+  </div>
+</header>
+<div class="row end-xs">
+  
+  
+  <div class="lang-switch col-xs-3 col-xs-offset-9">
+    <a href="/en/">English</a>
+  </div>
+  
+  
+</div>
+<div class="header-line"></div>
+
+        </div>
+        <header class="post-header">
+          <h1 class="post-title">浅析URL</h1>
+          
+          <div class="row post-desc">
+            <div class="col-xs-6">
+              
+              <time class="post-date" datetime="2020-03-09 16:47:16 EDT">
+                09 Mar 2020
+              </time>
+              
+            </div>
+            <div class="col-xs-6">
+              
+            </div>
+          </div>
+          
+        </header>
+
+        <div class="post-content markdown-body">
+          <p>简单总结几个跟URL有关的概念：</p>
+<h2 id="heading">域名</h2>
+<p>域名（domain name）简单来说就是对一个IP地址的别称。用<code>www.example.com</code>来举例子，<code>com</code>是顶级域名，其他常见的顶级域名还有<code>gov</code>, <code>edu</code>等。<code>example.com</code>是二级域名。前面再加上前缀<code>www</code>就变成了子域名（subdomain）。这些不同层级的域名将会被用作DNS查找过程中的参数。</p>
+<h2 id="dns">DNS</h2>
+<p>DNS全称为<strong>Domain Name System</strong>，是一个把域名和IP联系起来的系统。当你输入某某网站的网址并按下回车时，浏览器会向DNS询问该网址所对应的IP地址，然后发起http请求。</p>
+<h2 id="url">URL</h2>
+<p>URL的全称为<strong>Uniform Resource Locator</strong>，URL无非就是一个给定的独特资源在Web上的地址。理论上说，每个有效的URL都指向一个独特的资源。这个资源可以是一个HTML页面，一个CSS文档，一幅图像，等等。</p>
+<p>一个URL会有多个部分组成：</p>
+<ol>
+<li>协议（Protocol）：通常是http或者https</li>
+<li>域名：也可以使用IP地址</li>
+<li>端口：一台服务器可能会有多个端口来处理不同的服务，所以URL中的端口指定了将访问服务器的哪一个端口。http默认访问端口为80，https默认端口为443。一般浏览器会把默认端口隐藏起来。</li>
+<li>路径：服务器上的资源路径</li>
+<li>查询参数：提供给服务器的额外参数，由<code>&amp;</code>符号分隔开的键/值对。</li>
+<li>锚点（Anchor）：锚点表示资源中的一种“书签”，给浏览器显示位于该“加书签”位置的内容的方向</li>
+</ol>
+<h2 id="heading-1">参考文章</h2>
+<ol>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/What_is_a_URL">什么是URL</a></li>
+</ol>
+
+        </div>
+
+        <div class="row middle-xs">
+          <div class="col-xs-12">
+            
+          </div>
+        </div>
+
+        
+        
+
+        
+        
+        <div style="height: 50px;"></div>
+        
+        
+
+        <div class="site-footer">
+  
+  <div class="site-footer-item">
+    <a href="/aboutme" target="_blank">About Me</a>
+  </div>
+  
+  
+</div>
+
+      </div>
+    </div>
+  </article>
+
+  <script src="/js/highlight.pack.js"></script>
+
+
+<script>
+  hljs.initHighlightingOnLoad();
+  
+  
+  
+    
+    
+  
+</script>
+
+  
+
+</body>
+
+</html>

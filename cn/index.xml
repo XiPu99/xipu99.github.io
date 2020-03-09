@@ -6,17 +6,31 @@
     <description>Recent content on Xi Pu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Mar 2020 22:37:33 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 09 Mar 2020 16:47:16 -0400</lastBuildDate>
     
 	<atom:link href="https://xipu99.github.io/cn/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>浅析URL</title>
+      <link>https://xipu99.github.io/cn/posts/url-introduction/</link>
+      <pubDate>Mon, 09 Mar 2020 16:47:16 -0400</pubDate>
+      
+      <guid>https://xipu99.github.io/cn/posts/url-introduction/</guid>
+      <description>简单总结几个跟URL有关的概念：
+域名 域名（domain name）简单来说就是对一个IP地址的别称。用www.example.com来举例子，com是顶级域名，其他常见的顶级域名还有gov, edu等。example.com是二级域名。前面再加上前缀www就变成了子域名（subdomain）。这些不同层级的域名将会被用作DNS查找过程中的参数。
+DNS DNS全称为Domain Name System，是一个把域名和IP联系起来的系统。当你输入某某网站的网址并按下回车时，浏览器会向DNS询问该网址所对应的IP地址，然后发起http请求。
+URL URL的全称为Uniform Resource Locator，URL无非就是一个给定的独特资源在Web上的地址。理论上说，每个有效的URL都指向一个独特的资源。这个资源可以是一个HTML页面，一个CSS文档，一幅图像，等等。
+一个URL会有多个部分组成：
+ 协议（Protocol）：通常是http或者https 域名：也可以使用IP地址 端口：一台服务器可能会有多个端口来处理不同的服务，所以URL中的端口指定了将访问服务器的哪一个端口。http默认访问端口为80，https默认端口为443。一般浏览器会把默认端口隐藏起来。 路径：服务器上的资源路径 查询参数：提供给服务器的额外参数，由&amp;amp;符号分隔开的键/值对。 锚点（Anchor）：锚点表示资源中的一种“书签”，给浏览器显示位于该“加书签”位置的内容的方向  参考文章  什么是URL  </description>
+    </item>
+    
+    <item>
       <title>HTML常用的两种标签</title>
-      <link>https://xipu99.github.io/cn/posts/html_tags/</link>
+      <link>https://xipu99.github.io/cn/posts/html-tags/</link>
       <pubDate>Fri, 06 Mar 2020 22:37:33 -0500</pubDate>
       
-      <guid>https://xipu99.github.io/cn/posts/html_tags/</guid>
+      <guid>https://xipu99.github.io/cn/posts/html-tags/</guid>
       <description>&amp;lt;a&amp;gt; 标签 你可以在“href”中添加以下：
  一个网页链接 一个目录路径 当前页面中的一个元素，比如如果用户点击了下面代码所展示的链接，页面就会跳到页面中id为header的元素。如果将href设为#时，则会直接跳转到页面的顶部：  &amp;lt;p&amp;gt;&amp;lt;a href=&amp;#34;#header&amp;#34;&amp;gt; Jump to the heading below &amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt; 根据target属性所设置的不同值，当用户点击&amp;lt;a&amp;gt;标签所指的链接时，浏览器会有不同的行为：
  _self: 浏览器会使用当前页面来打开链接 _blank: 浏览器会打开一个新的页面  &amp;lt;img&amp;gt; 标签 &amp;lt;img&amp;gt;标签通常用来展示图片。
